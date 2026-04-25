@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KERNIK Project Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Sarabun',sans-serif;background:#f8fafc;color:#0f172a}
+        html{scroll-behavior:smooth}
+        ::-webkit-scrollbar{width:5px;height:5px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+        :root{
+            --i50:#eef2ff;--i100:#e0e7ff;--i200:#c7d2fe;--i500:#6366f1;--i600:#4f46e5;--i700:#4338ca;
+            --s50:#f8fafc;--s100:#f1f5f9;--s200:#e2e8f0;--s300:#cbd5e1;--s400:#94a3b8;--s500:#64748b;--s600:#475569;--s700:#334155;--s800:#1e293b;--s900:#0f172a;
+            --g50:#f0fdf4;--g500:#22c55e;--g600:#16a34a;--g700:#15803d;
+            --a50:#fffbeb;--a400:#fbbf24;--a500:#f59e0b;--a600:#d97706;--a700:#b45309;
+            --r50:#fef2f2;--r400:#f87171;--r500:#ef4444;--r600:#dc2626;
+            --c50:#ecfeff;--c600:#0891b2;--c700:#0e7490;
+            --p50:#faf5ff;--p500:#a855f7;--p600:#9333ea;--p700:#7e22ce;
+            --ro50:#fff1f2;--ro600:#e11d48;
+            --e50:#ecfdf5;--e600:#059669;
+            --o50:#fff7ed;--o600:#ea580c;
+            --sidebar-w:270px;
+        }
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+        .ani{animation:fadeIn .35s ease-out}.sani{animation:scaleIn .2s ease-out}
+
+        .app{display:flex;min-height:100vh}
+        /* SIDEBAR */
+        .sb{width:var(--sidebar-w);background:var(--s900);color:#fff;position:fixed;top:0;left:0;height:100vh;padding:14px;z-index:40;display:flex;flex-direction:column;border-right:1px solid var(--s800);overflow-y:auto}
+        .sb-brand{display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:24px}
+        .sb-brand-icon{background:var(--i500);padding:10px;border-radius:10px;display:flex}
+        .sb-brand span{font-weight:800;font-size:17px;letter-spacing:-.5px;text-transform:uppercase;font-style:italic}
+        .sb-section{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--s500);padding:14px 14px 6px}
+        .sb nav{flex:1;display:flex;flex-direction:column;gap:1px}
+        .nb{width:100%;display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:all .15s;background:0;color:var(--s400);text-align:left}
+        .nb:hover{background:var(--s800);color:#fff}.nb.act{background:var(--i600);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+        .nb .cnt{margin-left:auto;font-size:10px;background:rgba(255,255,255,.15);padding:1px 8px;border-radius:6px;font-weight:800}
+        .nb-indent{padding-left:36px;font-size:12px}
+        .sb-foot{border-top:1px solid var(--s800);padding-top:10px;display:flex;flex-direction:column;gap:1px;margin-top:8px}
+        .sb-foot .nb{font-size:11px;padding:7px 14px}
+
+        .mn{flex:1;margin-left:var(--sidebar-w);padding:32px 36px}
+
+        /* HEADER */
+        .hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px}
+        .hdr h1{font-size:28px;font-weight:900;color:var(--s900);letter-spacing:-1px;font-style:italic;text-transform:uppercase;line-height:1}
+        .hdr-sub{color:var(--s500);font-weight:600;margin-top:6px;display:flex;align-items:center;gap:8px;font-size:13px}
+        .hdr-sub .acc{color:var(--i600);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800}
+        .hdr-user{display:flex;align-items:center;gap:10px;background:#fff;padding:8px 16px;border-radius:14px;border:1px solid var(--s200);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+        .hdr-av{width:32px;height:32px;background:var(--i100);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--i600);font-weight:900;font-size:11px}
+
+        /* CARD */
+        .cd{background:#fff;border-radius:16px;border:1px solid var(--s200);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+        .sg{display:grid;gap:14px;margin-bottom:20px}
+        .sg5{grid-template-columns:repeat(5,1fr)}.sg4{grid-template-columns:repeat(4,1fr)}.sg3{grid-template-columns:repeat(3,1fr)}
+        .sc{padding:18px}
+        .sc .lb{color:var(--s400);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+        .sc .vl{font-size:26px;font-weight:900;color:var(--s900);margin-top:4px}
+        .sc.ai{border-left:4px solid var(--i500)}.sc.ag{border-left:4px solid var(--g500)}.sc.aa{border-left:4px solid var(--a500)}.sc.ar{border-left:4px solid var(--r500)}.sc.ac{border-left:4px solid var(--c600)}.sc.ap{border-left:4px solid var(--p500)}
+
+        /* TABS */
+        .tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+        .tab{padding:7px 18px;border-radius:10px;border:2px solid var(--s100);background:var(--s50);cursor:pointer;font-family:inherit;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--s400);transition:all .15s;display:flex;align-items:center;gap:5px}
+        .tab:hover{border-color:var(--s200);background:#fff}
+        .tab.act{border-color:var(--i600);background:var(--i600);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.2)}
+        .tab .tc{background:rgba(255,255,255,.2);padding:1px 7px;border-radius:5px;font-size:9px}
+        .tab:not(.act) .tc{background:var(--s100)}
+
+        /* FILTER */
+        .fb{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+        .sb-inp{flex:1;min-width:180px;padding:9px 14px 9px 36px;border-radius:10px;border:2px solid var(--s100);font-family:inherit;font-size:13px;font-weight:600;color:var(--s800);outline:0;transition:border .15s;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 12px center no-repeat}
+        .sb-inp:focus{border-color:var(--i500)}.sb-inp::placeholder{color:var(--s300)}
+        .fsel{padding:9px 14px;border-radius:10px;border:2px solid var(--s100);font-family:inherit;font-size:11px;font-weight:700;color:var(--s600);outline:0;cursor:pointer;background:#fff}
+        .fsel:focus{border-color:var(--i500)}
+
+        /* BTN */
+        .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.5px;transition:all .15s}
+        .bp{background:var(--i600);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.2)}.bp:hover{background:var(--i700);transform:translateY(-1px)}
+        .bs{background:var(--s50);color:var(--s600);border:2px solid var(--s200)}.bs:hover{background:#fff;border-color:var(--s300)}
+        .bd{background:var(--r50);color:var(--r600);border:2px solid transparent}.bd:hover{background:var(--r600);color:#fff}
+        .bsm{padding:5px 12px;font-size:10px;border-radius:7px}
+        .bic{width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:8px;border:2px solid var(--s100);background:#fff;cursor:pointer;color:var(--s400);transition:all .15s}
+        .bic:hover{border-color:var(--i200);color:var(--i600);background:var(--i50)}
+
+        /* TABLE */
+        .tw{overflow-x:auto}
+        table{width:100%;text-align:left;border-collapse:collapse}
+        thead{background:var(--s50)}
+        thead th{padding:12px 16px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--s400);border-bottom:1px solid var(--s100);white-space:nowrap;cursor:pointer;user-select:none}
+        thead th:hover{color:var(--s600)}
+        tbody td{padding:14px 16px;border-bottom:1px solid var(--s50);vertical-align:top;font-size:13px}
+        tbody tr{transition:background .1s}
+        tbody tr:hover{background:rgba(79,70,229,.02)}
+        tbody tr.sel{background:var(--i50)}
+
+        /* BADGE */
+        .bg{display:inline-flex;align-items:center;gap:3px;padding:2px 9px;border-radius:5px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+        .bg-g{background:var(--g50);color:var(--g700)}.bg-a{background:var(--a50);color:var(--a700)}.bg-r{background:var(--r50);color:var(--r600)}
+        .bg-i{background:var(--i50);color:var(--i600)}.bg-c{background:var(--c50);color:var(--c700)}.bg-p{background:var(--p50);color:var(--p700)}
+        .bg-ro{background:var(--ro50);color:var(--ro600)}.bg-e{background:var(--e50);color:var(--e600)}.bg-o{background:var(--o50);color:var(--o600)}
+        .bg-s{background:var(--s100);color:var(--s600)}
+
+        .pd{width:7px;height:7px;border-radius:50%;display:inline-block}
+        .ph{background:var(--r500)}.pn{background:var(--g500)}.pl{background:var(--s300)}
+        .pb{width:72px;height:5px;background:var(--s100);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle}
+        .pf{height:100%;border-radius:3px;transition:width .3s}
+
+        /* MODAL */
+        .mo{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+        .md{background:#fff;width:100%;border-radius:20px;box-shadow:0 25px 50px rgba(0,0,0,.15);overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
+        .md-s{max-width:480px}.md-m{max-width:650px}.md-l{max-width:880px}
+        .md-h{padding:20px 24px;border-bottom:1px solid var(--s100);display:flex;justify-content:space-between;align-items:center}
+        .md-h h3{font-size:18px;font-weight:900;letter-spacing:-.5px}
+        .md-b{padding:20px 24px;overflow-y:auto;flex:1}
+        .md-f{padding:14px 24px;border-top:1px solid var(--s100);display:flex;justify-content:flex-end;gap:8px}
+        .xb{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:none;cursor:pointer;background:0;color:var(--s400);transition:all .15s}
+        .xb:hover{background:var(--s100);color:var(--s600)}
+
+        .fg{margin-bottom:14px}.fl{display:block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--s400);margin-bottom:5px;font-style:italic}
+        .fi{width:100%;padding:9px 14px;border-radius:10px;border:2px solid var(--s100);font-family:inherit;font-size:13px;font-weight:600;color:var(--s800);outline:0;transition:border .15s}
+        .fi:focus{border-color:var(--i500)}.ft{min-height:70px;resize:vertical}
+        .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+        /* DETAIL */
+        .dp{background:#fff;border-radius:18px;border:1px solid var(--s200);box-shadow:0 4px 20px rgba(0,0,0,.06);overflow:hidden}
+        .dp-h{padding:20px 24px;border-bottom:1px solid var(--s100);display:flex;align-items:center;justify-content:space-between}
+        .dp-b{padding:20px 24px}
+        .ds{margin-bottom:20px}
+        .dst{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--s400);margin-bottom:10px;font-style:italic;display:flex;align-items:center;gap:5px}
+        .dg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .di{background:var(--s50);padding:10px 14px;border-radius:10px;border:1px solid var(--s100)}
+        .di .lb{font-size:9px;font-weight:700;color:var(--s400);text-transform:uppercase;letter-spacing:.5px}
+        .di .vl{font-size:13px;font-weight:700;color:var(--s800);margin-top:1px}
+
+        /* KANBAN */
+        .kb{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+        .kc{background:var(--s50);border-radius:14px;padding:14px;min-height:260px;border:1px solid var(--s100)}
+        .kch{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--s200);display:flex;justify-content:space-between;align-items:center}
+        .kk{background:#fff;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid var(--s200);cursor:pointer;transition:all .15s}
+        .kk:hover{box-shadow:0 4px 12px rgba(0,0,0,.07);transform:translateY(-1px)}
+        .kk .tt{font-size:12px;font-weight:700;color:var(--s800);margin-bottom:4px}
+        .kk .mt{font-size:10px;color:var(--s400);font-weight:600}
+
+        .tl{position:relative;padding-left:20px}
+        .tl::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:var(--s200)}
+        .tl-i{position:relative;margin-bottom:16px}
+        .tl-i::before{content:'';position:absolute;left:-17px;top:3px;width:8px;height:8px;border-radius:50%;background:var(--i500);border:2px solid #fff;box-shadow:0 0 0 2px var(--i200)}
+        .tl-i .tm{font-size:9px;font-weight:700;color:var(--s400)}
+        .tl-i .ct{font-size:12px;font-weight:600;color:var(--s700);margin-top:1px}
+
+        .es{text-align:center;padding:48px 20px;color:var(--s400)}
+        .es p{font-size:13px;font-weight:600}
+
+        /* PROJECT OVERVIEW CARDS */
+        .poc{padding:20px;cursor:pointer;transition:all .15s;border:2px solid transparent;position:relative;overflow:hidden}
+        .poc:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:var(--i200)}
+        .poc.active{border-color:var(--i500);box-shadow:0 8px 24px rgba(79,70,229,.12)}
+        .poc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:22px}
+        .poc h3{font-size:15px;font-weight:800;color:var(--s900);margin-bottom:2px}
+        .poc p{font-size:11px;color:var(--s400);font-weight:600}
+        .poc-stats{display:flex;gap:14px;margin-top:12px}
+        .poc-stat{font-size:10px;font-weight:700;color:var(--s500)}
+        .poc-stat strong{display:block;font-size:18px;font-weight:900;color:var(--s800)}
+
+        @media(max-width:1200px){.sg5,.sg4{grid-template-columns:repeat(3,1fr)}.kb{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:768px){.sb{transform:translateX(-100%)}.mn{margin-left:0;padding:16px}.sg5,.sg4,.sg3{grid-template-columns:1fr 1fr}.kb{grid-template-columns:1fr}.dg,.fr{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ══════════════════════════════════════════════════════════════
+//  KERNIK PROJECT HUB — Multi-Project BD/Sourcing/Task Tracker
+// ══════════════════════════════════════════════════════════════
+
+// ── PROJECT DEFINITIONS ──
+const PROJ_COLORS=['i','r','p','c','g','a','e','o','ro'];
+const COUNTRY_FLAGS={'Turkey':'🇹🇷','Vietnam':'🇻🇳','Indonesia':'🇮🇩','India':'🇮🇳','Myanmar':'🇲🇲','Philippines':'🇵🇭','Bangladesh':'🇧🇩','Pakistan':'🇵🇰','Cambodia':'🇰🇭','Laos':'🇱🇦','Malaysia':'🇲🇾','Japan':'🇯🇵','Korea':'🇰🇷','China':'🇨🇳','Russia':'🇷🇺','Germany':'🇩🇪','France':'🇫🇷','Italy':'🇮🇹','Spain':'🇪🇸','UK':'🇬🇧','USA':'🇺🇸','Brazil':'🇧🇷','Mexico':'🇲🇽','UAE':'🇦🇪','Saudi Arabia':'🇸🇦','Egypt':'🇪🇬','South Africa':'🇿🇦','Australia':'🇦🇺','Thailand':'🇹🇭','Uzbekistan':'🇺🇿','Kazakhstan':'🇰🇿'};
+const PROJ_ICONS=['📦','🔬','🧪','🏭','🛢️','🧲','💊','🪵','🎯','📐','🔩','⚙️','🧴','🪣','🌿','💎'];
+
+let PROJECTS = {
+    overview: { id:'overview', name:'Overview', icon:'📊', desc:'All Projects Summary', color:'i', fixed:true },
+    turkey:   { id:'turkey', name:'Turkey BD', icon:'🇹🇷', desc:'Turkey Business Development — Rubber, Tire, Wood, Aluminum', color:'r', ptype:'country', fixed:true },
+    colorant: { id:'colorant', name:'Colorant Sourcing', icon:'🎨', desc:'Dye & Pigment Supplier Sourcing — India, China', color:'p', ptype:'custom', fixed:true },
+    benz:     { id:'benz', name:'Benz Tasks', icon:'📋', desc:'Personal Task Management — R&D, Sourcing, Documents', color:'c', ptype:'custom', fixed:true },
+};
+
+const STATUS_MAP = {
+    'New Lead':{c:'bg-i'},'In Progress':{c:'bg-a'},'Ongoing':{c:'bg-a'},'Sample Sent':{c:'bg-c'},'Trial':{c:'bg-p'},
+    'Waiting Result':{c:'bg-o'},'Won':{c:'bg-g'},'Completed':{c:'bg-g'},'Lost':{c:'bg-r'},'On Hold':{c:'bg-s'},
+    'Hold':{c:'bg-s'},'Not yet started':{c:'bg-s'},'Follow test':{c:'bg-e'},'NG':{c:'bg-r'},'Pass':{c:'bg-g'},
+    'Pending':{c:'bg-a'},'2026':{c:'bg-i'},
+};
+const STAT_ALL = Object.keys(STATUS_MAP);
+
+const TYPE_MAP = {
+    'BD':{l:'BD',c:'bg-i'},'R&D':{l:'R&D',c:'bg-p'},'Existing product Expand':{l:'Product Expand',c:'bg-c'},
+    'Sourcing(FG)':{l:'Sourcing',c:'bg-a'},'Other':{l:'Other',c:'bg-s'},'Other check':{l:'Research',c:'bg-e'},
+    'NG':{l:'NG',c:'bg-r'},'Pending':{l:'Pending',c:'bg-a'},'Pass':{l:'Pass',c:'bg-g'},
+    'ศึกษาข้อมูล':{l:'Research',c:'bg-e'},'จัดทำเอกสาร':{l:'Document',c:'bg-i'},'ติดต่อ supplier':{l:'Supplier Contact',c:'bg-c'},
+    'พัฒนาสินค้าใหม่':{l:'New Product Dev',c:'bg-p'},'Sourcing(ทำเอง)':{l:'Self-Source',c:'bg-a'},
+    'ตามผลทดสอบ KERNIK':{l:'Follow Test',c:'bg-e'},'ตามผลทดสอบตัวอย่าง sup':{l:'Supplier Test',c:'bg-o'},
+    'ทดสอบสินค้า':{l:'Product Test',c:'bg-p'},'ตามผลทดสอบ':{l:'Follow Test',c:'bg-e'},
+    'ติดตามข้อมูล':{l:'Follow Up',c:'bg-a'},'ติดตามสินค้า Supplier':{l:'Track Supplier',c:'bg-c'},
+    'พัฒนาสินค้าใหม่(Sourcing)':{l:'New Product(Src)',c:'bg-p'},'อุปกรณ์ เครื่องมือต่างๆ':{l:'Equipment',c:'bg-s'},
+};
+
+const COUNTRIES = {'All':'🌐','Turkey':'🇹🇷','India':'🇮🇳','China':'🇨🇳','Thai':'🇹🇭','Russia':'🇷🇺','Europe':'🇪🇺','Vietnam':'🇻🇳','Indonesia':'🇮🇩','Bangladesh':'🇧🇩'};
+
+// ── INITIAL DATA ──
+const DATA_TURKEY=[
+{id:'TK1',p:'turkey',product:'UV Cure primer',summary:'Paint coating on thin MDF, UV cure technology',price:13,customer:'Yildiz',status:'On Hold',type:'BD',lead:'Serda',match:'Not finish',source:'Thai',deadline:'2025-10-10',pri:'normal',prog:10,notes:'Serda didn\'t continue with us',country:'Turkey',hist:[{d:'2025-04',t:'Received TDS/SDS, Converting to KERNIK'}]},
+{id:'TK2',p:'turkey',product:'Aluminum brightener',summary:'Trials with KLC313GLD — worked 90%. Consp 13 MT/Y',price:5.8,customer:'Onat',status:'In Progress',type:'R&D',lead:'Serda',match:'Not finish',source:'',deadline:'2025-10-17',pri:'normal',prog:45,notes:'',country:'Turkey',hist:[{d:'2025-03',t:'Turkey: testing stability after surfactant'},{d:'2025-04',t:'Thailand: Received wetting agent from BYK'}],subs:[{n:'Test wetting agent compatibility',done:false}]},
+{id:'TK3',p:'turkey',product:'RA for diecasting',summary:'Solvent type every 8 shot. Consp 80 kg/M. Tested DCI-105VN at 1:20, still oily. Test up to 1:40.',price:0,customer:'Ersan Gauvano',status:'In Progress',type:'Existing product Expand',lead:'Serda',match:'DCI-105VN',source:'China',deadline:'2025-10-10',pri:'normal',prog:30,notes:'',country:'Turkey',hist:[]},
+{id:'TK4',p:'turkey',product:'Single use silicone emulsion',summary:'Consp 150 kg/M',price:0,customer:'Ersan Kaucuk',status:'In Progress',type:'Existing product Expand',lead:'Serda',match:'KLS-1000, KLS-1030',source:'China',deadline:'2025-10-10',pri:'normal',prog:25,notes:'',country:'Turkey',hist:[]},
+{id:'TK5',p:'turkey',product:'Solvent based RA for EPDM',summary:'Consp 25 kg/M, Currently use Henkel R150',price:0,customer:'Ersan Kaucuk',status:'In Progress',type:'Existing product Expand',lead:'Serda',match:'KLOS-207',source:'Thai',deadline:'2025-10-08',pri:'normal',prog:20,notes:'',country:'Turkey',hist:[]},
+{id:'TK6',p:'turkey',product:'Mold cleaner',summary:'Currently sand blasting, need chemical to reduce mold abrasive',price:0,customer:'Ersan Kaucuk',status:'In Progress',type:'Existing product Expand',lead:'Serda',match:'KLC-320H',source:'Thai',deadline:'2025-10-08',pri:'normal',prog:15,notes:'',country:'Turkey',hist:[]},
+{id:'TK7',p:'turkey',product:'Batch off (soap based)',summary:'Soap based from Netherlands BARBE. Product MA42. Dilution 1%-3.5%.',price:0,customer:'Kolsan-Waterfall',status:'In Progress',type:'Sourcing(FG)',lead:'Polikem',match:'Not finish',source:'',deadline:'2025-10-10',pri:'normal',prog:20,notes:'Approved',country:'Turkey',hist:[],subs:[{n:'Ca/Zn/Mg/Soap sourcing',done:false}]},
+{id:'TK8',p:'turkey',product:'Inside release agent',summary:'Chemtrend ML8267 (5 tires) & TAG919NBR (8 tires). Consp 4.2 MT/Y.',price:0,customer:'Kolsan-Waterfall',status:'Sample Sent',type:'Existing product Expand',lead:'Polikem',match:'BCI-300N',source:'',deadline:'2025-10-08',pri:'normal',prog:50,notes:'Customer requested 5 kg sample',country:'Turkey',hist:[]},
+{id:'TK9',p:'turkey',product:'Tire inspection agent',summary:'Rimlube 928/5. Consp 1 MT/M.',price:0,customer:'Kolsan-Waterfall',status:'Sample Sent',type:'Existing product Expand',lead:'Polikem',match:'RLI-033/15',source:'',deadline:'2025-10-16',pri:'normal',prog:45,notes:'Customer requested 100 g',country:'Turkey',hist:[]},
+{id:'TK10',p:'turkey',product:'Mold release agent (winter)',summary:'Winter tire only. Consp 25 kg/M, applied 2x/shift.',price:0,customer:'Kolsan-Waterfall',status:'Sample Sent',type:'Existing product Expand',lead:'Polikem',match:'MRI-160',source:'',deadline:'2025-10-08',pri:'normal',prog:40,notes:'Customer requested 2 kg',country:'Turkey',hist:[]},
+{id:'TK11',p:'turkey',product:'Batch off (powder CaSt)',summary:'CaSt powder 12 MT/M. Current Kettlitz BTO44VC.',price:2.4,customer:'ÖZKA LASTIK',status:'In Progress',type:'Sourcing(FG)',lead:'Polikem',match:'Not finish',source:'Indonesia',deadline:'',pri:'high',prog:35,notes:'Chasing result from Indo',country:'Turkey',hist:[],subs:[{n:'Thai CaSt (TPCC) — Not competitive',done:true},{n:'Indonesia CaSt (AsiaPalm) — Evaluating',done:false}]},
+{id:'TK12',p:'turkey',product:'Inside paint',summary:'Water based black (Mica). From Muench via local. IBCs issue.',price:0,customer:'ÖZKA LASTIK',status:'In Progress',type:'Existing product Expand',lead:'Polikem',match:'ILI-032WS grey',source:'',deadline:'2025-10-08',pri:'normal',prog:20,notes:'',country:'Turkey',hist:[]},
+{id:'TK13',p:'turkey',product:'Bladder coating',summary:'Assessing if paint step can be skipped. 100 cycles ok on small tires.',price:0,customer:'ÖZKA LASTIK',status:'In Progress',type:'Existing product Expand',lead:'Polikem',match:'BCI-250A',source:'',deadline:'2025-10-08',pri:'normal',prog:15,notes:'',country:'Turkey',hist:[]},
+{id:'TK14',p:'turkey',product:'Batch off (KALE)',summary:'Conveyor belt NR + CaSt 12 MT/M. Price $1.35/kg.',price:1.35,customer:'KALE CONVEYOR',status:'In Progress',type:'Sourcing(FG)',lead:'Polikem',match:'',source:'',deadline:'2025-10-10',pri:'normal',prog:15,notes:'',country:'Turkey',hist:[]},
+{id:'TK15',p:'turkey',product:'Flame retardant (ATO)',summary:'3-4 MT/M Antimony Trioxide $47/kg. Open to alternatives.',price:47,customer:'KALE CONVEYOR',status:'New Lead',type:'BD',lead:'Polikem',match:'',source:'',deadline:'',pri:'high',prog:5,notes:'',country:'Turkey',hist:[],subs:[{n:'Study tin powder Yunnan',done:false},{n:'Check REACH cost',done:false}]},
+{id:'TK16',p:'turkey',product:'Silicone hose lubricant',summary:'0.5 MT/M, applied by sponge',price:0,customer:'FLEXATI AS',status:'In Progress',type:'Existing product Expand',lead:'Polikem',match:'KLS-3000',source:'',deadline:'2025-10-08',pri:'normal',prog:25,notes:'',country:'Turkey',hist:[]},
+{id:'TK17',p:'turkey',product:'Zinc stearate powder',summary:'From local Reageneus. Top priority. Consp 2 MT/M.',price:0,customer:'FLEXATI AS',status:'In Progress',type:'Sourcing(FG)',lead:'Polikem',match:'Not finish',source:'Indonesia',deadline:'2025-10-10',pri:'high',prog:20,notes:'',country:'Turkey',hist:[]},
+{id:'TK18',p:'turkey',product:'Wood industry products',summary:'Release agent/Colorant/Biocide/Cleaner/Adhesive for CELAL',price:0,customer:'CELAL',status:'In Progress',type:'Existing product Expand',lead:'CELAL',match:'KLD-102, KLD-1032HC',source:'',deadline:'2025-10-08',pri:'normal',prog:30,notes:'',country:'Turkey',hist:[],subs:[{n:'Find competitor price Turkey',done:false},{n:'Check CELAL company details',done:true}]},
+{id:'TK19',p:'turkey',product:'Flame retardant (FLEXATI)',summary:'Antimony oxide 300 kg/M',price:47,customer:'FLEXATI AS',status:'New Lead',type:'BD',lead:'Polikem',match:'Not finish',source:'',deadline:'2025-10-10',pri:'normal',prog:5,notes:'',country:'Turkey',hist:[]},
+{id:'TK20',p:'turkey',product:'Green-tinted film for MDF',summary:'Protective film for color fading on green MDF',price:0,customer:'',status:'In Progress',type:'Other check',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:25,notes:'Sent enquiry to AEP, Chintec, Ginegar, RKW',country:'Turkey',hist:[]},
+];
+
+const DATA_COLORANT=[
+{id:'CL1',p:'colorant',product:'Indokem',summary:'All material for textile — ผลไม่ดีสู้ KLD-Blue-01P ไม่ได้',price:0,customer:'',status:'NG',type:'NG',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:100,notes:'NG — ผลไม่ดีสู้ KLD-Blue-01P ไม่ได้',country:'India',hist:[{d:'2025-03',t:'ทดสอบสีตัวอย่าง 4 ตัวอย่าง'}],subs:[{n:'ทดสอบสีตัวอย่าง 4 ตัวอย่าง',done:true}]},
+{id:'CL2',p:'colorant',product:'Sohan Color',summary:'All material for textile',price:0,customer:'',status:'In Progress',type:'Pass',lead:'Serena',match:'',source:'',deadline:'',pri:'normal',prog:60,notes:'',country:'India',hist:[{d:'2025-02',t:'Code Color matching'},{d:'2025-03',t:'ส่งตัวอย่างมาทดสอบ'}],subs:[{n:'Code Color matching',done:true},{n:'ส่งตัวอย่างมาทดสอบ',done:true},{n:'ทดสอบสี',done:false}]},
+{id:'CL3',p:'colorant',product:'Umesh (Rubber glove)',summary:'Dye and Pigment',price:0,customer:'',status:'In Progress',type:'Pass',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:70,notes:'',country:'India',hist:[],subs:[{n:'ส่งตัวอย่างไปทดสอบ',done:true},{n:'Umesh ส่งตัวอย่างกลับ',done:true},{n:'Test matching to customer — all on spec',done:true},{n:'Send sample to end customer',done:false}]},
+{id:'CL4',p:'colorant',product:'Alliance Organic',summary:'Liquid dye & pigment blue. Sell to Kimtin. Blue26, Green4, Dye to Brazil.',price:0,customer:'',status:'Completed',type:'Pass',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:80,notes:'Blue15:3 เข้มกว่า Umesh และราคาถูกกว่า',country:'India',hist:[{d:'2025-12',t:'New: Basic green4 55%, Violet10, PB15:3, Red12'}],subs:[{n:'Basic Green 4 50-55%',done:true},{n:'Violet 10',done:true},{n:'Pigment Blue 15:3 Paste',done:true},{n:'Red 12',done:true}]},
+{id:'CL5',p:'colorant',product:'Indiglo',summary:'Green 50-55% — สีเขียวเข้มสุด ราคาถูกสุดเทียบ Umesh/Alliance',price:0,customer:'',status:'Completed',type:'Pass',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:100,notes:'Blue26, Red12, PB15:3',country:'India',hist:[]},
+{id:'CL6',p:'colorant',product:'Unilex Colours',summary:'Dye & Pigment — pigment blue 15.3 price $5.2',price:5.2,customer:'',status:'In Progress',type:'NG',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:30,notes:'',country:'India',hist:[],subs:[{n:'ถามราคา Pigment blue 15.3',done:false}]},
+{id:'CL7',p:'colorant',product:'Zhejiang Nami Material',summary:'Pigment paste in China for MDF. Contact via K.Kuang.',price:0,customer:'',status:'In Progress',type:'Pending',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:20,notes:'',country:'China',hist:[]},
+{id:'CL8',p:'colorant',product:'Dayglo Color Corp',summary:'Contact via K.Kuang',price:0,customer:'',status:'In Progress',type:'Pending',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:15,notes:'',country:'China',hist:[{d:'2025-12',t:'Samples Dec 25'}]},
+{id:'CL9',p:'colorant',product:'Wenzhou',summary:'Current black supplier',price:0,customer:'',status:'Ongoing',type:'Pending',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:40,notes:'',country:'China',hist:[]},
+{id:'CL10',p:'colorant',product:'Colorspearse',summary:'Alternative paint supplier — มีตัวแทนในไทยแล้ว',price:0,customer:'',status:'Completed',type:'Pass',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:100,notes:'',country:'India',hist:[]},
+{id:'CL11',p:'colorant',product:'Colourtex',summary:'All material for textile',price:0,customer:'',status:'Ongoing',type:'Pending',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:10,notes:'',country:'India',hist:[]},
+{id:'CL12',p:'colorant',product:'Colour-Chem India',summary:'Bio-based additive for paper and textile',price:0,customer:'',status:'Ongoing',type:'Pending',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:10,notes:'',country:'India',hist:[]},
+{id:'CL13',p:'colorant',product:'Kiri Industries (KIL)',summary:'Alternative paint supplier',price:0,customer:'',status:'Ongoing',type:'Pending',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:10,notes:'Email sent',country:'India',hist:[]},
+{id:'CL14',p:'colorant',product:'Bodal Chemicals',summary:'Alternative paint supplier',price:0,customer:'',status:'Ongoing',type:'Pending',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:10,notes:'Email sent',country:'India',hist:[]},
+{id:'CL15',p:'colorant',product:'Meghmani Organics',summary:'Alternative paint supplier',price:0,customer:'',status:'Ongoing',type:'Pending',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:10,notes:'Email sent',country:'India',hist:[]},
+];
+
+const DATA_BENZ=[
+{id:'BZ1',p:'benz',product:'Soybean protein glue for plywood',summary:'กาวถั่วเหลืองสำหรับไม้อัด',price:0,customer:'',status:'Ongoing',type:'ศึกษาข้อมูล',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:50,notes:'Failed Class D4 test',country:'All',hist:[{d:'2025-02',t:'Assemble time test — ไม่ส่งผลกระทบกับความแข็งแรง'},{d:'2025-03',t:'Next stage: ทดสอบ Class D4 — Failed'}],subs:[{n:'Market survey',done:false},{n:'Test report — ผ่านมาตรฐานไม้กันความชื้น',done:true},{n:'Assemble time test',done:true},{n:'Class D4 test',done:false}]},
+{id:'BZ2',p:'benz',product:'แก้ 101 (น้ำยาแยกชั้น)',summary:'แก้ปัญหาเรื่องน้ำยาแยกชั้น',price:0,customer:'',status:'Ongoing',type:'พัฒนาสินค้าใหม่',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:40,notes:'',country:'Thai',hist:[],subs:[{n:'Lab test',done:true},{n:'Test production',done:false},{n:'ส่ง ลค',done:false},{n:'First PO',done:false}]},
+{id:'BZ3',p:'benz',product:'Biocide Weifan (new supplier)',summary:'Develop new grade biocide',price:0,customer:'',status:'Ongoing',type:'ติดต่อ supplier',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:30,notes:'',country:'China',hist:[],subs:[{n:'ส่ง CMIT/MIT + additive for price calc',done:false},{n:'Select raw mat for them',done:false}]},
+{id:'BZ4',p:'benz',product:'กาวถั่ว PB+MDI',summary:'ทดสอบสินค้า PB+MDI',price:0,customer:'',status:'Ongoing',type:'ทดสอบสินค้า',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:35,notes:'',country:'All',hist:[{d:'2025-02',t:'ส่ง next stage test อาจารย์ทรงกรด'}]},
+{id:'BZ5',p:'benz',product:'สี Rubber glove (Umesh)',summary:'Color matching สำหรับถุงมือยาง',price:0,customer:'Umesh',status:'Ongoing',type:'Sourcing(ทำเอง)',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:50,notes:'',country:'India',hist:[],subs:[{n:'ส่งสี target',done:true},{n:'ขอตัวอย่าง Color matching',done:true},{n:'ส่งทดสอบลูกค้า',done:false}]},
+{id:'BZ6',p:'benz',product:'Propylene carbonate',summary:'Cleaner สำหรับกาว pMDI',price:0,customer:'',status:'Ongoing',type:'Sourcing(ทำเอง)',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:60,notes:'',country:'Thai',hist:[],subs:[{n:'เอกสาร ราคา',done:true},{n:'สั่งของ AIR',done:true}]},
+{id:'BZ7',p:'benz',product:'Yunnan Flame retardant',summary:'Flame retardant from Yunnan tin',price:0,customer:'',status:'Ongoing',type:'ติดต่อ supplier',lead:'',match:'',source:'',deadline:'2025-03-11',pri:'normal',prog:20,notes:'',country:'China',hist:[],subs:[{n:'คุยเรื่องการใช้งาน',done:false},{n:'ขอตัวอย่าง Supplier',done:false}]},
+{id:'BZ8',p:'benz',product:'KLPS-900N',summary:'ลูกค้าใช้งานกะละ 5 kg สองกะ 10 kg',price:0,customer:'',status:'Ongoing',type:'พัฒนาสินค้าใหม่',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:30,notes:'',country:'Thai',hist:[],subs:[{n:'ทดสอบ internal formula',done:false},{n:'ส่ง ตย ให้ลูกค้าทดสอบ',done:false}]},
+{id:'BZ9',p:'benz',product:'RA rotation molding',summary:'พัฒนาสินค้าใหม่ Release Agent',price:0,customer:'',status:'Ongoing',type:'พัฒนาสินค้าใหม่',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:45,notes:'สูตร Final: EL-39 10% + GF9 1%',country:'Thai',hist:[],subs:[{n:'รับสาร Target',done:true},{n:'ทดสอบ Target sample',done:true},{n:'พัฒนาสูตร',done:false},{n:'ทดสอบสูตร internal',done:false},{n:'ส่งตัวอย่างให้ลูกค้า',done:false}]},
+{id:'BZ10',p:'benz',product:'Brake pad cleaner',summary:'Requirement จาก Ataboon อินโดนีเซีย กระป๋องอัดแก๊ซ',price:0,customer:'Ataboon',status:'Ongoing',type:'พัฒนาสินค้าใหม่(Sourcing)',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:10,notes:'',country:'Indonesia',hist:[],subs:[{n:'ส่งข้อมูลให้ Supplier',done:false},{n:'รับตัวอย่าง TDS SDS จาก supplier',done:false}]},
+{id:'BZ11',p:'benz',product:'REACH OR representative',summary:'หา Only Representative สำหรับ REACH',price:0,customer:'',status:'Not yet started',type:'ติดต่อ supplier',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:5,notes:'',country:'Europe',hist:[],subs:[{n:'Intertek (register via Web)',done:false},{n:'ROR (register via web+email)',done:false},{n:'ECOmundo (France)',done:false},{n:'ORO Organization',done:false}]},
+{id:'BZ12',p:'benz',product:'Bio-glue test',summary:'ทดสอบกาวชีวภาพกับลูกค้าหลายราย',price:0,customer:'Multiple',status:'In Progress',type:'ตามผลทดสอบ KERNIK',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:20,notes:'',country:'Thai',hist:[],subs:[{n:'Sin Jareon — เค้ายังไม่ซื้อ รอกาวภายนอก',done:false},{n:'Siam Kyowa — รอเข้าพบ',done:false},{n:'Sor kit Chai — รอกาวภายนอก',done:false},{n:'Pan toy — รอ AICA พาไปทดสอบ',done:false},{n:'Panel plus — รอ internal test',done:false}]},
+{id:'BZ13',p:'benz',product:'Colorant projects (2026)',summary:'New shade blue pigment, Rubber glove สี, Violet 19, Red12, Green pigment',price:0,customer:'Panel Plus / Mercator / วนชัย',status:'2026',type:'ตามผลทดสอบ KERNIK',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:5,notes:'',country:'Thai',hist:[],subs:[{n:'Blue pigment Panel Plus (Alliance) — samples ~9/25',done:false},{n:'Rubber glove ดำ+น้ำเงิน Mercator — ส่ง ~9/25',done:false},{n:'Violet 19 pigment Panel Plus',done:false},{n:'Violet10 เสนอราคา สกิจชัย',done:false},{n:'Red12 Siam Fiberboard/วนชัย',done:false},{n:'Green pigment วนชัย',done:false},{n:'Color matching Bangladesh',done:false}]},
+{id:'BZ14',p:'benz',product:'PAE Resin sourcing',summary:'หา Supplier PAE Resin จากหลายประเทศ',price:0,customer:'',status:'Ongoing',type:'ติดต่อ supplier',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:25,notes:'Fenton: 3.5 Yuan/kg FOB',country:'China',hist:[],subs:[{n:'Jiaxing Ochs Chemical (China)',done:false},{n:'Kepkep Kimya (Turkey)',done:false},{n:'Chang Chun Group (Taiwan)',done:false},{n:'Solenis',done:false},{n:'Wuxi Tianxin Chemical',done:false},{n:'Fenton Biotech — $509/ton',done:false}]},
+{id:'BZ15',p:'benz',product:'หา Supplier กาวถั่ว',summary:'6 suppliers ทั้งจีนและอเมริกา',price:0,customer:'',status:'Ongoing',type:'Sourcing(ทำเอง)',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:30,notes:'',country:'All',hist:[],subs:[{n:'Wuhan Healthdream Bio',done:false},{n:'Cargill Inc.',done:false},{n:'Solae LLC (DuPont)',done:false},{n:'Archer Daniels Midland',done:false},{n:'Shandong Yuxin Bio-Tech',done:false},{n:'Columbia Forest (PureBond)',done:false}]},
+{id:'BZ16',p:'benz',product:'พัฒนาน้ำยา Anti-tack ให้ PI',summary:'ลูกค้าติดปัญหาคราบขาว ยาง BR หนา 1 cm กองสูง 20 cm',price:0,customer:'PI',status:'Ongoing',type:'พัฒนาสินค้าใหม่',lead:'',match:'',source:'',deadline:'',pri:'normal',prog:25,notes:'ส่งสูตร 2 ตัว: Wax based + Soap based',country:'Thai',hist:[],subs:[{n:'พัฒนาสูตร',done:false},{n:'ทดลองผสม',done:false}]},
+{id:'BZ17',p:'benz',product:'Biocide นราทอง',summary:'Biocide ใช้กับไม้จริง ลค ใช้เครื่อง Pressure อบ Boron ศึกษา CuAz',price:0,customer:'นราทอง',status:'Ongoing',type:'ศึกษาข้อมูล',lead:'',match:'',source:'',deadline:'2025-03-18',pri:'normal',prog:15,notes:'',country:'Thai',hist:[]},
+{id:'BZ18',p:'benz',product:'หา Toll ใน Turkey',summary:'แจ้ง David ให้ช่วยหา ยังไม่มีคำตอบ',price:0,customer:'',status:'Ongoing',type:'ติดต่อ supplier',lead:'David',match:'',source:'',deadline:'2025-03-25',pri:'normal',prog:10,notes:'',country:'Turkey',hist:[]},
+];
+
+// ── STATE ──
+let S={
+    proj:'overview',view:'list',tasks:[],search:'',fStat:'',fType:'',fCountry:'',
+    sortBy:'product',sortDir:'asc',selId:null,modal:null,editT:null,confirmAct:null,_projType:'country'
+};
+
+function load(){try{const d=JSON.parse(localStorage.getItem('kernik_hub_v2'));if(d&&d.tasks)S.tasks=d.tasks;else S.tasks=[...DATA_TURKEY,...DATA_COLORANT,...DATA_BENZ];if(d&&d.customProjects){d.customProjects.forEach(cp=>{if(!PROJECTS[cp.id])PROJECTS[cp.id]=cp})}}catch(e){S.tasks=[...DATA_TURKEY,...DATA_COLORANT,...DATA_BENZ]}}
+function save(){try{const cp=Object.values(PROJECTS).filter(p=>!p.fixed);localStorage.setItem('kernik_hub_v2',JSON.stringify({tasks:S.tasks,customProjects:cp}))}catch(e){}}
+function gid(){return 't'+Date.now()+Math.random().toString(36).substr(2,4)}
+function fd(d){if(!d)return'—';try{return new Date(d).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'})}catch(e){return d}}
+function od(d){return d&&new Date(d)<new Date()}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function getTasks(){
+    let t=S.tasks;
+    if(S.proj!=='overview')t=t.filter(x=>x.p===S.proj);
+    if(S.search){const q=S.search.toLowerCase();t=t.filter(x=>(x.product||'').toLowerCase().includes(q)||(x.customer||'').toLowerCase().includes(q)||(x.summary||'').toLowerCase().includes(q)||(x.match||'').toLowerCase().includes(q)||(x.notes||'').toLowerCase().includes(q))}
+    if(S.fStat)t=t.filter(x=>x.status===S.fStat);
+    if(S.fType)t=t.filter(x=>x.type===S.fType);
+    if(S.fCountry)t=t.filter(x=>x.country===S.fCountry);
+    t.sort((a,b)=>{let va=a[S.sortBy]||'',vb=b[S.sortBy]||'';if(typeof va==='number'&&typeof vb==='number')return S.sortDir==='asc'?va-vb:vb-va;return S.sortDir==='asc'?String(va).localeCompare(String(vb)):String(vb).localeCompare(String(va))});
+    return t;
+}
+function projTasks(pid){return S.tasks.filter(t=>t.p===pid)}
+function getLeads(){const s=new Set();S.tasks.forEach(t=>{if(t.lead)s.add(t.lead)});return[...s].sort()}
+function getStatuses(){const s=new Set();getTasks().forEach(t=>s.add(t.status));return[...s].sort()}
+function getTypes(){const s=new Set();getTasks().forEach(t=>{if(t.type)s.add(t.type)});return[...s].sort()}
+function getCountriesForFilter(){const s=new Set();getTasks().forEach(t=>{if(t.country)s.add(t.country)});return[...s].sort()}
+
+// ── ICONS ──
+const I={
+    globe:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+    bar:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>',
+    kanban:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>',
+    plus:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+    x:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>',
+    edit:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+    trash:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+    dl:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+    ul:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
+    back:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>',
+    chk:'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    clock:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+    flag:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>',
+    target:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+    file:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>',
+    link:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+};
+
+// ══════════════════════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════════════════════
+function R(){
+    document.getElementById('app').innerHTML=`<div class="app">${rSB()}<div class="mn">${rHdr()}<div class="ani">${S.proj==='overview'?rOverview():(S.view==='detail'?rDetail():(S.view==='kanban'?rKanban():rList()))}</div></div></div>${S.modal?rModal():''}`;
+    bind();
+}
+
+function rSB(){
+    const pids=Object.keys(PROJECTS);
+    return`<div class="sb"><div class="sb-brand"><div class="sb-brand-icon">${I.globe}</div><span>Project Hub</span></div>
+    <div class="sb-section">Projects</div><nav>
+    ${pids.map(pid=>{const p=PROJECTS[pid];const cnt=pid==='overview'?S.tasks.length:projTasks(pid).length;
+    return`<button class="nb ${S.proj===pid?'act':''}" data-proj="${pid}">${p.icon} ${p.name}<span class="cnt">${cnt}</span></button>`}).join('')}
+    <button class="nb" onclick="S.modal='addProject';R()" style="border:1px dashed var(--s600);margin-top:4px;color:var(--s500)">${I.plus} Add Project</button>
+    </nav>
+    <div class="sb-section" style="margin-top:16px">Views</div><nav>
+    ${S.proj!=='overview'?`
+    <button class="nb nb-indent ${S.view==='list'?'act':''}" data-setview="list">${I.bar} Table View</button>
+    <button class="nb nb-indent ${S.view==='kanban'?'act':''}" data-setview="kanban">${I.kanban} Kanban Board</button>`:''}
+    </nav>
+    <div class="sb-foot">
+        <button class="nb" onclick="exportJSON()">${I.dl} Backup JSON</button>
+        <button class="nb" onclick="document.getElementById('imp').click()">${I.ul} Import JSON</button>
+        <button class="nb" onclick="exportCSV()">${I.file} Export CSV</button>
+        <input type="file" id="imp" accept=".json" style="display:none" onchange="importJSON(event)">
+    </div></div>`;
+}
+
+function rHdr(){
+    const p=PROJECTS[S.proj];
+    return`<div class="hdr"><div><h1>${p.icon} ${p.name}</h1><div class="hdr-sub"><span class="acc">${p.desc}</span></div></div>
+    <div class="hdr-user"><div class="hdr-av">BZ</div><div><div style="font-size:12px;font-weight:800;color:var(--s800);line-height:1">BENZ</div><div style="font-size:9px;font-weight:700;color:var(--s400);text-transform:uppercase;letter-spacing:1px">Project Manager</div></div></div></div>`;
+}
+
+// ── OVERVIEW ──
+function rOverview(){
+    const pids=Object.keys(PROJECTS).filter(k=>k!=='overview');
+    const all=S.tasks;
+    const active=all.filter(t=>['In Progress','Ongoing','Sample Sent','Trial','Waiting Result'].includes(t.status)).length;
+    const done=all.filter(t=>['Won','Completed','Pass'].includes(t.status)).length;
+    const overdue=all.filter(t=>od(t.deadline)&&!['Won','Completed','Lost','On Hold','Pass','NG'].includes(t.status)).length;
+
+    return`<div class="sg sg4" style="margin-bottom:24px">
+    <div class="cd sc"><div class="lb">Total Tasks</div><div class="vl">${all.length}</div></div>
+    <div class="cd sc ag"><div class="lb">Active</div><div class="vl" style="color:var(--g600)">${active}</div></div>
+    <div class="cd sc ap"><div class="lb">Completed</div><div class="vl" style="color:var(--p600)">${done}</div></div>
+    <div class="cd sc ar"><div class="lb">Overdue</div><div class="vl" style="color:${overdue?'var(--r500)':'var(--s900)'}">${overdue}</div></div>
+    </div>
+    <h2 style="font-size:16px;font-weight:800;color:var(--s700);margin-bottom:16px;text-transform:uppercase;letter-spacing:1px">📁 Projects</h2>
+    <div class="sg sg3">
+    ${pids.map(pid=>{const p=PROJECTS[pid];const ts=projTasks(pid);const act=ts.filter(t=>['In Progress','Ongoing','Sample Sent','Trial','Waiting Result'].includes(t.status)).length;const dn=ts.filter(t=>['Won','Completed','Pass'].includes(t.status)).length;const od_=ts.filter(t=>od(t.deadline)&&!['Won','Completed','Lost','On Hold','Pass','NG'].includes(t.status)).length;const avgProg=ts.length?Math.round(ts.reduce((s,t)=>s+t.prog,0)/ts.length):0;
+    return`<div class="cd poc" data-proj="${pid}" style="position:relative">
+    ${!p.fixed?`<button class="xb" onclick="event.stopPropagation();confirmDelProj('${pid}')" style="position:absolute;top:10px;right:10px;color:var(--s300)" title="Delete project">${I.trash}</button>`:''}
+    <div class="poc-icon" style="background:var(--${p.color}50);font-size:26px">${p.icon}</div>
+    <h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p>
+    <div style="margin-top:4px">${p.ptype==='country'?'<span class="bg bg-a" style="font-size:8px">🌍 COUNTRY BD</span>':'<span class="bg bg-p" style="font-size:8px">📋 PROJECT</span>'}</div>
+    <div class="poc-stats">
+    <div class="poc-stat"><strong>${ts.length}</strong>Total</div>
+    <div class="poc-stat"><strong style="color:var(--g600)">${act}</strong>Active</div>
+    <div class="poc-stat"><strong style="color:var(--p600)">${dn}</strong>Done</div>
+    ${od_?`<div class="poc-stat"><strong style="color:var(--r500)">${od_}</strong>Overdue</div>`:''}
+    </div>
+    <div style="margin-top:12px;display:flex;align-items:center;gap:8px">
+    <div style="flex:1;height:6px;background:var(--s100);border-radius:3px;overflow:hidden"><div style="height:100%;width:${avgProg}%;background:var(--i500);border-radius:3px"></div></div>
+    <span style="font-size:10px;font-weight:800;color:var(--s400)">${avgProg}%</span>
+    </div></div>`}).join('')}
+    <div class="cd poc" onclick="S.modal='addProject';R()" style="border:2px dashed var(--s200);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;cursor:pointer;background:var(--s50)">
+    <div style="width:44px;height:44px;border-radius:12px;background:var(--i50);display:flex;align-items:center;justify-content:center;color:var(--i500);margin-bottom:10px">${I.plus}</div>
+    <h3 style="color:var(--s500);font-size:14px">Add New Project</h3>
+    <p style="color:var(--s400);font-size:11px;margin-top:2px">Country BD or Custom Project</p>
+    </div>
+    </div>
+    <h2 style="font-size:16px;font-weight:800;color:var(--s700);margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px">⚠️ Overdue & High Priority</h2>
+    <div class="cd tw" style="overflow:hidden">
+    <table><thead><tr><th>Project</th><th>Product</th><th>Customer</th><th>Status</th><th>Deadline</th><th>Priority</th></tr></thead><tbody>
+    ${all.filter(t=>(od(t.deadline)&&!['Won','Completed','Lost','On Hold','Pass','NG'].includes(t.status))||t.pri==='high').slice(0,15).map(t=>{
+    const pn=PROJECTS[t.p]||{icon:'',name:''};const sm=STATUS_MAP[t.status]||{c:'bg-s'};
+    return`<tr style="cursor:pointer" onclick="S.proj='${t.p}';S.view='detail';S.selId='${t.id}';R()">
+    <td style="font-weight:700;font-size:12px">${pn.icon} ${esc(pn.name)}</td>
+    <td style="font-weight:700">${esc(t.product)}</td>
+    <td style="font-size:12px;color:var(--s600)">${esc(t.customer||'—')}</td>
+    <td><span class="bg ${sm.c}">${esc(t.status)}</span></td>
+    <td style="font-size:12px;${od(t.deadline)?'color:var(--r500);font-weight:700':''}">${fd(t.deadline)}</td>
+    <td>${t.pri==='high'?'<span class="bg bg-r">⚡ HIGH</span>':'<span class="pd pn"></span>'}</td>
+    </tr>`}).join('')||'<tr><td colspan="6"><div class="es"><p>No overdue or high priority items</p></div></td></tr>'}
+    </tbody></table></div>`;
+}
+
+// ── LIST VIEW ──
+function rList(){
+    const tasks=getTasks();
+    const countries=getCountriesForFilter();
+    return`
+    <div class="fb">
+        <input type="text" class="sb-inp" placeholder="Search product, customer, notes..." value="${esc(S.search)}" oninput="S.search=this.value;R()">
+        <select class="fsel" onchange="S.fStat=this.value;R()"><option value="">All Status</option>${getStatuses().map(s=>`<option value="${s}" ${S.fStat===s?'selected':''}>${s}</option>`).join('')}</select>
+        <select class="fsel" onchange="S.fType=this.value;R()"><option value="">All Types</option>${getTypes().map(t=>`<option value="${t}" ${S.fType===t?'selected':''}>${(TYPE_MAP[t]||{l:t}).l}</option>`).join('')}</select>
+        ${countries.length>1?`<select class="fsel" onchange="S.fCountry=this.value;R()"><option value="">All Countries</option>${countries.map(c=>`<option value="${c}" ${S.fCountry===c?'selected':''}>${COUNTRIES[c]||'🏳️'} ${c}</option>`).join('')}</select>`:''}
+        <button class="btn bp" onclick="openAdd()">${I.plus} New Task</button>
+    </div>
+    <div class="cd tw" style="overflow:hidden"><table><thead><tr>
+    <th style="width:24px"></th>
+    <th onclick="tsort('product')">Product ${S.sortBy==='product'?(S.sortDir==='asc'?'↑':'↓'):''}</th>
+    <th>Customer</th><th onclick="tsort('status')">Status</th><th>Type</th><th>Lead</th><th>Match</th>
+    <th onclick="tsort('price')">Price</th><th onclick="tsort('deadline')">Deadline</th><th>Progress</th><th style="text-align:right">⋮</th>
+    </tr></thead><tbody>
+    ${tasks.length===0?'<tr><td colspan="11"><div class="es"><p>No tasks found</p></div></td></tr>':
+    tasks.map(t=>{const over=od(t.deadline)&&!['Won','Completed','Lost','On Hold','Pass','NG'].includes(t.status);const sm=STATUS_MAP[t.status]||{c:'bg-s'};const tm=TYPE_MAP[t.type]||{l:t.type||'—',c:'bg-s'};const cf=COUNTRIES[t.country]||'🏳️';
+    return`<tr style="cursor:pointer" onclick="S.view='detail';S.selId='${t.id}';R()">
+    <td><span class="pd ${t.pri==='high'?'ph':t.pri==='low'?'pl':'pn'}"></span></td>
+    <td><div style="font-weight:700;color:var(--s800)">${esc(t.product)}</div><div style="font-size:10px;color:var(--s400)">${cf} ${esc(t.country||'')}</div></td>
+    <td style="font-weight:600;color:var(--s700)">${esc(t.customer||'—')}</td>
+    <td><span class="bg ${sm.c}">${esc(t.status)}</span></td>
+    <td><span class="bg ${tm.c}">${tm.l}</span></td>
+    <td style="font-size:12px;color:var(--s600)">${esc(t.lead||'—')}</td>
+    <td style="font-size:12px;color:var(--s600);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.match||'—')}</td>
+    <td style="font-weight:700">${t.price?'$'+t.price:'—'}</td>
+    <td><div style="font-size:12px;${over?'color:var(--r500);font-weight:700':'color:var(--s600)'}">${fd(t.deadline)}</div>${over?'<div style="font-size:9px;font-weight:800;color:var(--r500)">OVERDUE</div>':''}</td>
+    <td><div style="display:flex;align-items:center;gap:6px"><span class="pb"><span class="pf" style="width:${t.prog}%;background:var(--i500)"></span></span><span style="font-size:10px;font-weight:800;color:var(--s400)">${t.prog}%</span></div></td>
+    <td style="text-align:right" onclick="event.stopPropagation()"><button class="bic" onclick="openEdit('${t.id}')">${I.edit}</button></td>
+    </tr>`}).join('')}</tbody></table></div>`;
+}
+
+// ── KANBAN ──
+function rKanban(){
+    const tasks=getTasks();
+    const cols=[{t:'New / Not Started',ss:['New Lead','Not yet started','Pending'],c:'i'},{t:'In Progress',ss:['In Progress','Ongoing','Sample Sent','Follow test'],c:'a'},{t:'Trial / Waiting',ss:['Trial','Waiting Result','2026'],c:'p'},{t:'Closed',ss:['Won','Completed','Lost','On Hold','Pass','NG'],c:'g'}];
+    return`<div class="fb"><input type="text" class="sb-inp" placeholder="Search..." value="${esc(S.search)}" oninput="S.search=this.value;R()"><button class="btn bp" onclick="openAdd()">${I.plus} New Task</button></div>
+    <div class="kb">${cols.map(col=>{const items=tasks.filter(t=>col.ss.includes(t.status));
+    return`<div class="kc"><div class="kch"><span style="color:var(--${col.c}600)">${col.t}</span><span class="bg bg-${col.c}">${items.length}</span></div>
+    ${items.length===0?'<div style="text-align:center;padding:20px;font-size:11px;color:var(--s300)">No tasks</div>':
+    items.map(t=>{const sm=STATUS_MAP[t.status]||{c:'bg-s'};const cf=COUNTRIES[t.country]||'🏳️';
+    return`<div class="kk" onclick="S.view='detail';S.selId='${t.id}';R()">
+    <div class="tt">${esc(t.product)}</div>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:4px"><span class="bg ${sm.c}" style="font-size:8px">${t.status}</span></div>
+    <div class="mt">${cf} ${esc(t.customer||t.country||'')}${t.deadline?' • '+fd(t.deadline):''}</div>
+    <div style="margin-top:6px;display:flex;align-items:center;gap:5px"><span class="pb" style="flex:1"><span class="pf" style="width:${t.prog}%;background:var(--i500)"></span></span><span style="font-size:9px;font-weight:800;color:var(--s400)">${t.prog}%</span></div>
+    </div>`}).join('')}</div>`}).join('')}</div>`;
+}
+
+// ── DETAIL ──
+function rDetail(){
+    const t=S.tasks.find(x=>x.id===S.selId);if(!t)return'<div class="es"><p>Task not found</p></div>';
+    const sm=STATUS_MAP[t.status]||{c:'bg-s'};const tm=TYPE_MAP[t.type]||{l:t.type||'—',c:'bg-s'};const cf=COUNTRIES[t.country]||'🏳️';const over=od(t.deadline)&&!['Won','Completed','Lost','On Hold','Pass','NG'].includes(t.status);const subs=t.subs||[];const links=t.links||[];
+    const allTypes=getAllTypes();
+    return`<button class="btn bs" onclick="S.view='list';S.selId=null;R()" style="margin-bottom:16px">${I.back} Back</button>
+    <div class="dp sani"><div class="dp-h"><div style="display:flex;align-items:center;gap:14px">
+    <div style="padding:10px;background:var(--i50);border-radius:10px;color:var(--i600)">${I.target}</div>
+    <div><h2 style="font-size:18px;font-weight:900;letter-spacing:-.5px;text-transform:uppercase">${esc(t.product)}</h2>
+    <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap"><span style="font-size:10px;font-weight:800;color:var(--s400);letter-spacing:1px">${cf} ${esc(t.country||'')}</span>
+    <select onchange="updType('${t.id}',this.value)" style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:5px;border:1px solid var(--s200);background:var(--i50);color:var(--i600);cursor:pointer;font-family:inherit;outline:0">${allTypes.map(ty=>`<option value="${esc(ty)}" ${t.type===ty?'selected':''}>${esc((TYPE_MAP[ty]||{l:ty}).l)}</option>`).join('')}</select>
+    <span class="bg ${sm.c}">${esc(t.status)}</span>${t.pri==='high'?'<span class="bg bg-r">⚡ HIGH</span>':''}</div></div></div>
+    <div style="display:flex;gap:6px"><button class="btn bs bsm" onclick="openEdit('${t.id}')">${I.edit} Edit</button><button class="btn bd bsm" onclick="confirmDel('${t.id}')">${I.trash} Delete</button></div></div>
+    <div class="dp-b">
+    <div class="ds"><div class="dst">${I.file} Summary</div><div style="background:var(--s50);padding:14px;border-radius:10px;border:1px solid var(--s100);font-size:13px;color:var(--s700);line-height:1.7">${esc(t.summary||'No summary')}</div></div>
+    <div class="ds"><div class="dst">${I.flag} Key Info</div><div class="dg">
+    <div class="di"><div class="lb">Customer</div><div class="vl">${esc(t.customer||'—')}</div></div>
+    <div class="di"><div class="lb">Lead By</div><div class="vl">${esc(t.lead||'—')}</div></div>
+    <div class="di"><div class="lb">Product Match</div><div class="vl">${esc(t.match||'—')}</div></div>
+    <div class="di"><div class="lb">Source</div><div class="vl">${esc(t.source||'—')}</div></div>
+    <div class="di"><div class="lb">Competitor Price</div><div class="vl" ${t.price?'style="color:var(--i600)"':''}>${t.price?'$'+t.price+'/kg':'—'}</div></div>
+    <div class="di"><div class="lb">Deadline</div><div class="vl" ${over?'style="color:var(--r500)"':''}>${fd(t.deadline)}${over?' ⚠️ OVERDUE':''}</div></div></div></div>
+
+    <!-- ATTACHMENTS / LINKS -->
+    <div class="ds"><div class="dst">${I.link} Attachments & Links</div>
+    ${links.length>0?`<div style="display:flex;flex-direction:column;gap:6px">
+    ${links.map((lk,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--s50);border-radius:8px;border:1px solid var(--s100)">
+    <span style="font-size:14px">${lk.type==='file'?'📎':'🔗'}</span>
+    <a href="${esc(lk.url)}" target="_blank" rel="noopener" style="flex:1;font-size:12px;font-weight:700;color:var(--i600);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(lk.url)}">${esc(lk.name||lk.url)}</a>
+    <span style="font-size:9px;color:var(--s400);white-space:nowrap">${esc(lk.date||'')}</span>
+    <button class="xb" onclick="removeLink('${t.id}',${i})" style="width:22px;height:22px" title="Remove">${I.x}</button>
+    </div>`).join('')}
+    </div>`:'<div style="text-align:center;padding:14px;font-size:11px;color:var(--s300);background:var(--s50);border-radius:10px;border:1px dashed var(--s200)">No attachments yet</div>'}
+    <div style="display:flex;gap:6px;margin-top:8px">
+    <button class="btn bs bsm" onclick="addLink('${t.id}')">${I.link} Add Link / URL</button>
+    <button class="btn bs bsm" onclick="addFileLink('${t.id}')">${I.ul} Upload File Link</button>
+    </div></div>
+
+    <div class="ds"><div class="dst">${I.bar} Progress</div><div style="background:var(--s50);padding:14px;border-radius:10px;border:1px solid var(--s100)">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;font-weight:700;color:var(--s600)">Overall</span><span style="font-size:13px;font-weight:900;color:var(--i600)">${t.prog}%</span></div>
+    <div style="width:100%;height:7px;background:var(--s200);border-radius:4px;overflow:hidden"><div style="height:100%;width:${t.prog}%;background:linear-gradient(90deg,var(--i500),var(--i600));border-radius:4px"></div></div>
+    <div style="display:flex;gap:5px;margin-top:10px">${[0,10,25,50,75,100].map(v=>`<button class="btn bsm ${t.prog===v?'bp':'bs'}" onclick="updProg('${t.id}',${v})">${v}%</button>`).join('')}</div></div></div>
+    ${subs.length>0?`<div class="ds"><div class="dst">${I.chk} Sub-Tasks (${subs.filter(s=>s.done).length}/${subs.length})</div>
+    ${subs.map((s,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:${s.done?'var(--g50)':'#fff'};border-radius:8px;border:1px solid ${s.done?'var(--g500)':'var(--s100)'};margin-bottom:6px;cursor:pointer" onclick="togSub('${t.id}',${i})">
+    <div style="width:18px;height:18px;border-radius:5px;border:2px solid ${s.done?'var(--g500)':'var(--s200)'};display:flex;align-items:center;justify-content:center;background:${s.done?'var(--g500)':'#fff'};color:#fff;flex-shrink:0">${s.done?I.chk:''}</div>
+    <span style="font-size:12px;font-weight:600;${s.done?'text-decoration:line-through;color:var(--s400)':'color:var(--s700)'}">${esc(s.n)}</span></div>`).join('')}
+    <button class="btn bs bsm" onclick="addSub('${t.id}')" style="margin-top:6px">${I.plus} Add Sub-Task</button></div>`:
+    `<div class="ds"><div class="dst">${I.chk} Sub-Tasks</div><button class="btn bs bsm" onclick="addSub('${t.id}')">${I.plus} Add Sub-Task</button></div>`}
+    <div class="ds"><div class="dst">${I.edit} Notes</div><div style="background:var(--s50);padding:12px;border-radius:10px;border:1px solid var(--s100);font-size:12px;color:var(--s600);font-style:italic;min-height:32px">${esc(t.notes||'No notes')}</div></div>
+    <div class="ds"><div class="dst">${I.clock} Activity Log</div>
+    ${t.hist&&t.hist.length?`<div class="tl">${t.hist.map(h=>`<div class="tl-i"><div class="tm">${esc(h.d||'')}</div><div class="ct">${esc(h.t)}</div></div>`).join('')}</div>`:'<div style="text-align:center;padding:16px;font-size:11px;color:var(--s300);background:var(--s50);border-radius:10px;border:1px dashed var(--s200)">No activity yet</div>'}
+    <button class="btn bs bsm" onclick="addHist('${t.id}')" style="margin-top:8px">${I.plus} Add Activity</button></div>
+    <div class="ds"><div class="dst">${I.flag} Change Status</div><div style="display:flex;gap:5px;flex-wrap:wrap">
+    ${['New Lead','In Progress','Ongoing','Sample Sent','Trial','Waiting Result','Follow test','Completed','Won','Lost','On Hold','Not yet started'].map(s=>`<button class="btn bsm ${t.status===s?'bp':'bs'}" onclick="updStat('${t.id}','${s}')">${s}</button>`).join('')}</div></div>
+    </div></div>`;
+}
+
+// ── MODAL ──
+function rModal(){
+    if(S.modal==='addTask'||S.modal==='editTask')return rForm();
+    if(S.modal==='addProject')return rAddProject();
+    if(S.modal==='confirm')return`<div class="mo" onclick="if(event.target===this)clM()"><div class="md md-s sani"><div class="md-h"><h3 style="color:var(--r600)">⚠️ Confirm Delete</h3><button class="xb" onclick="clM()">${I.x}</button></div><div class="md-b"><p style="font-size:13px;font-weight:600;color:var(--s600)">Are you sure? This cannot be undone.</p></div><div class="md-f"><button class="btn bs" onclick="clM()">Cancel</button><button class="btn bd" onclick="execDel()">Delete</button></div></div></div>`;
+    if(S.modal==='confirmDelProj')return`<div class="mo" onclick="if(event.target===this)clM()"><div class="md md-s sani"><div class="md-h"><h3 style="color:var(--r600)">⚠️ Delete Project</h3><button class="xb" onclick="clM()">${I.x}</button></div><div class="md-b"><p style="font-size:13px;font-weight:600;color:var(--s600)">Delete this project? All tasks inside will also be deleted. This cannot be undone.</p></div><div class="md-f"><button class="btn bs" onclick="clM()">Cancel</button><button class="btn bd" onclick="execDelProj()">Delete Project</button></div></div></div>`;
+    return'';
+}
+
+function rAddProject(){
+    const projType=S._projType||'country';
+    return`<div class="mo" onclick="if(event.target===this)clM()"><div class="md md-m sani"><div class="md-h"><h3>➕ Add New Project</h3><button class="xb" onclick="clM()">${I.x}</button></div><div class="md-b">
+
+    <div class="fg"><label class="fl">Project Type</label>
+    <div style="display:flex;gap:8px;margin-top:4px">
+    <button class="btn ${projType==='country'?'bp':'bs'}" onclick="S._projType='country';R()" style="flex:1;justify-content:center;padding:14px 10px;flex-direction:column;gap:4px">
+    <span style="font-size:22px">🌍</span><span style="font-size:11px">Country BD</span>
+    <span style="font-size:9px;font-weight:600;opacity:.7;text-transform:none;letter-spacing:0">เพิ่มประเทศใหม่สำหรับ BD</span>
+    </button>
+    <button class="btn ${projType==='custom'?'bp':'bs'}" onclick="S._projType='custom';R()" style="flex:1;justify-content:center;padding:14px 10px;flex-direction:column;gap:4px">
+    <span style="font-size:22px">📋</span><span style="font-size:11px">Custom Project</span>
+    <span style="font-size:9px;font-weight:600;opacity:.7;text-transform:none;letter-spacing:0">โครงการอื่นๆ เช่น Sourcing, R&D</span>
+    </button>
+    </div></div>
+
+    ${projType==='country'?`
+    <div class="fg"><label class="fl">Select Country *</label>
+    <select class="fi" id="fp-country"><option value="">— เลือกประเทศ —</option>${Object.entries(COUNTRY_FLAGS).filter(([k])=>!Object.values(PROJECTS).some(p=>p.ptype==='country'&&p.name.toLowerCase().includes(k.toLowerCase()))).map(([k,f])=>`<option value="${k}">${f} ${k}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" id="fp-desc" placeholder="e.g. Rubber, Tire, Chemical market expansion"></div>
+    `:`
+    <div class="fg"><label class="fl">Project Name *</label><input class="fi" id="fp-name" placeholder="e.g. PAE Resin Sourcing"></div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" id="fp-desc" placeholder="e.g. Find alternative PAE resin suppliers"></div>
+    <div class="fg"><label class="fl">Icon</label>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">${PROJ_ICONS.map(ic=>`<button class="btn bs bsm" onclick="document.getElementById('fp-icon').value='${ic}';this.parentElement.querySelectorAll('button').forEach(b=>b.style.outline='');this.style.outline='2px solid var(--i500)'" style="font-size:18px;padding:6px 10px;border-radius:8px">${ic}</button>`).join('')}</div>
+    <input type="hidden" id="fp-icon" value="📦">
+    </div>
+    `}
+
+    </div><div class="md-f"><button class="btn bs" onclick="clM()">Cancel</button><button class="btn bp" onclick="saveProject()">Create Project</button></div></div></div>`;
+}
+
+function rForm(){
+    const t=S.editT||{p:S.proj!=='overview'?S.proj:'turkey',product:'',summary:'',price:'',customer:'',status:'New Lead',type:'BD',lead:'',match:'',source:'',deadline:'',pri:'normal',notes:'',prog:0,country:'Turkey'};
+    const isE=S.modal==='editTask';
+    const allCountries=Object.entries(COUNTRIES).filter(([k])=>k!=='All');
+    return`<div class="mo" onclick="if(event.target===this)clM()"><div class="md md-m sani"><div class="md-h"><h3>${isE?'Edit Task':'New Task'}</h3><button class="xb" onclick="clM()">${I.x}</button></div><div class="md-b">
+    <div class="fr"><div class="fg"><label class="fl">Project *</label><select class="fi" id="f-p">${Object.entries(PROJECTS).filter(([k])=>k!=='overview').map(([k,p])=>`<option value="${k}" ${t.p===k?'selected':''}>${p.icon} ${p.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">Country</label><select class="fi" id="f-c">${allCountries.map(([k,f])=>`<option value="${k}" ${t.country===k?'selected':''}>${f} ${k}</option>`).join('')}</select></div></div>
+    <div class="fg"><label class="fl">Product / Task Name *</label><input class="fi" id="f-n" value="${esc(t.product)}" placeholder="Product name"></div>
+    <div class="fg"><label class="fl">Summary</label><textarea class="fi ft" id="f-s" placeholder="Details...">${esc(t.summary)}</textarea></div>
+    <div class="fr"><div class="fg"><label class="fl">Customer</label><input class="fi" id="f-cu" value="${esc(t.customer||'')}" placeholder="Customer"></div>
+    <div class="fg"><label class="fl">Competitor Price (USD)</label><input class="fi" id="f-pr" type="number" step="0.01" value="${t.price||''}" placeholder="0.00"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Status</label><select class="fi" id="f-st">${STAT_ALL.map(s=>`<option value="${s}" ${t.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">Task Type</label><div style="display:flex;gap:6px"><select class="fi" id="f-ty" style="flex:1">${getAllTypes().map(ty=>`<option value="${esc(ty)}" ${t.type===ty?'selected':''}>${esc((TYPE_MAP[ty]||{l:ty}).l)}</option>`).join('')}</select><button class="btn bs bsm" onclick="addNewType()" style="white-space:nowrap" title="Add new type">${I.plus}</button></div></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Lead By</label><input class="fi" id="f-ld" value="${esc(t.lead||'')}" placeholder="Person" list="llist"><datalist id="llist">${getLeads().map(l=>`<option value="${l}">`).join('')}</datalist></div>
+    <div class="fg"><label class="fl">Product Match</label><input class="fi" id="f-m" value="${esc(t.match||'')}" placeholder="KERNIK code"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Source</label><select class="fi" id="f-sr"><option value="">—</option>${['Thai','China','Indonesia','India','Other'].map(s=>`<option value="${s}" ${t.source===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">Deadline</label><input class="fi" id="f-dl" type="date" value="${t.deadline||''}"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Priority</label><select class="fi" id="f-pi"><option value="low" ${t.pri==='low'?'selected':''}>🟢 Low</option><option value="normal" ${t.pri==='normal'?'selected':''}>🟡 Normal</option><option value="high" ${t.pri==='high'?'selected':''}>🔴 High</option></select></div>
+    <div class="fg"><label class="fl">Progress %</label><input class="fi" id="f-pg" type="number" min="0" max="100" value="${t.prog||0}"></div></div>
+    <div class="fg"><label class="fl">Notes</label><textarea class="fi ft" id="f-no" placeholder="Notes...">${esc(t.notes||'')}</textarea></div>
+    </div><div class="md-f"><button class="btn bs" onclick="clM()">Cancel</button><button class="btn bp" onclick="saveT(${isE})">${isE?'Update':'Create'}</button></div></div></div>`;
+}
+
+// ── BIND ──
+function bind(){
+    document.querySelectorAll('[data-proj]').forEach(b=>b.onclick=()=>{S.proj=b.dataset.proj;S.view=b.dataset.proj==='overview'?'list':'list';S.selId=null;S.search='';S.fStat='';S.fType='';S.fCountry='';R()});
+    document.querySelectorAll('[data-setview]').forEach(b=>b.onclick=()=>{S.view=b.dataset.setview;S.selId=null;R()});
+}
+
+function tsort(f){if(S.sortBy===f)S.sortDir=S.sortDir==='asc'?'desc':'asc';else{S.sortBy=f;S.sortDir='asc'}R()}
+function openAdd(){S.modal='addTask';S.editT=null;R()}
+function openEdit(id){const t=S.tasks.find(x=>x.id===id);if(t){S.modal='editTask';S.editT={...t}}R()}
+function clM(){S.modal=null;S.editT=null;S.confirmAct=null;S._projType=S._projType||'country';R()}
+
+function saveProject(){
+    const ptype=S._projType||'country';
+    let pid,name,icon,desc,color;
+    color=PROJ_COLORS[Object.keys(PROJECTS).length % PROJ_COLORS.length];
+
+    if(ptype==='country'){
+        const sel=document.getElementById('fp-country');
+        if(!sel||!sel.value){alert('กรุณาเลือกประเทศ');return}
+        const country=sel.value;
+        pid=country.toLowerCase().replace(/\s+/g,'_');
+        if(PROJECTS[pid]){alert('Project นี้มีอยู่แล้ว');return}
+        name=country+' BD';
+        icon=COUNTRY_FLAGS[country]||'🏳️';
+        desc=country+' Business Development';
+        const descEl=document.getElementById('fp-desc');
+        if(descEl&&descEl.value.trim())desc=country+' BD — '+descEl.value.trim();
+        // Also add this country to the COUNTRIES map
+        if(!COUNTRIES[country])COUNTRIES[country]=icon;
+    } else {
+        const nameEl=document.getElementById('fp-name');
+        if(!nameEl||!nameEl.value.trim()){alert('กรุณาระบุชื่อ Project');return}
+        name=nameEl.value.trim();
+        pid=name.toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').substr(0,30);
+        if(PROJECTS[pid]){pid+='_'+Date.now().toString(36)}
+        const iconEl=document.getElementById('fp-icon');
+        icon=iconEl?iconEl.value:'📦';
+        const descEl=document.getElementById('fp-desc');
+        desc=descEl?descEl.value.trim():'';
+    }
+
+    PROJECTS[pid]={id:pid,name,icon,desc:desc||name,color,ptype,fixed:false};
+    save();
+    S.modal=null;S._projType='country';
+    S.proj=pid;S.view='list';
+    R();
+}
+
+function confirmDelProj(pid){S.confirmAct=pid;S.modal='confirmDelProj';R()}
+function execDelProj(){
+    const pid=S.confirmAct;
+    if(pid&&PROJECTS[pid]&&!PROJECTS[pid].fixed){
+        S.tasks=S.tasks.filter(t=>t.p!==pid);
+        delete PROJECTS[pid];
+        save();
+        S.modal=null;S.confirmAct=null;S.proj='overview';S.view='list';
+        R();
+    }
+}
+
+function saveT(isE){
+    const d={p:document.getElementById('f-p').value,country:document.getElementById('f-c').value,product:document.getElementById('f-n').value.trim(),summary:document.getElementById('f-s').value.trim(),customer:document.getElementById('f-cu').value.trim(),price:parseFloat(document.getElementById('f-pr').value)||0,status:document.getElementById('f-st').value,type:document.getElementById('f-ty').value.trim(),lead:document.getElementById('f-ld').value.trim(),match:document.getElementById('f-m').value.trim(),source:document.getElementById('f-sr').value,deadline:document.getElementById('f-dl').value,pri:document.getElementById('f-pi').value,prog:parseInt(document.getElementById('f-pg').value)||0,notes:document.getElementById('f-no').value.trim()};
+    if(!d.product){alert('กรุณาระบุชื่อ Product/Task');return}
+    if(isE&&S.editT){S.tasks=S.tasks.map(t=>t.id===S.editT.id?{...t,...d}:t)}else{S.tasks.push({id:gid(),...d,hist:[],subs:[],links:[]})}
+    save();clM();
+}
+
+function confirmDel(id){S.confirmAct=id;S.modal='confirm';R()}
+function execDel(){if(S.confirmAct){S.tasks=S.tasks.filter(t=>t.id!==S.confirmAct);save();S.modal=null;S.confirmAct=null;S.view='list';S.selId=null;R()}}
+function updStat(id,st){S.tasks=S.tasks.map(t=>t.id===id?{...t,status:st}:t);save();R()}
+function updProg(id,pg){S.tasks=S.tasks.map(t=>t.id===id?{...t,prog:pg}:t);save();R()}
+function togSub(id,i){S.tasks=S.tasks.map(t=>{if(t.id===id&&t.subs&&t.subs[i]!==undefined){const ns=[...t.subs];ns[i]={...ns[i],done:!ns[i].done};return{...t,subs:ns}}return t});save();R()}
+function addSub(id){const n=prompt('Sub-task name:');if(!n||!n.trim())return;S.tasks=S.tasks.map(t=>t.id===id?{...t,subs:[...(t.subs||[]),{n:n.trim(),done:false}]}:t);save();R()}
+function addHist(id){const t=prompt('Activity note:');if(!t||!t.trim())return;S.tasks=S.tasks.map(x=>x.id===id?{...x,hist:[...(x.hist||[]),{d:new Date().toISOString().split('T')[0],t:t.trim()}]}:x);save();R()}
+
+// ── TYPE MANAGEMENT ──
+let customTypes=[];
+function getAllTypes(){
+    const base=Object.keys(TYPE_MAP);
+    const fromTasks=S.tasks.map(t=>t.type).filter(Boolean);
+    const all=[...new Set([...base,...fromTasks,...customTypes])].sort();
+    return all;
+}
+function addNewType(){
+    const name=prompt('New type name (e.g. ตรวจสอบคุณภาพ):');
+    if(!name||!name.trim())return;
+    const n=name.trim();
+    if(!TYPE_MAP[n])TYPE_MAP[n]={l:n,c:'bg-s'};
+    if(!customTypes.includes(n))customTypes.push(n);
+    // Update the dropdown if it exists
+    const sel=document.getElementById('f-ty');
+    if(sel){const opt=document.createElement('option');opt.value=n;opt.textContent=n;opt.selected=true;sel.appendChild(opt)}
+    saveCustomTypes();
+}
+function updType(id,type){S.tasks=S.tasks.map(t=>t.id===id?{...t,type}:t);save();R()}
+function loadCustomTypes(){try{const d=JSON.parse(localStorage.getItem('kernik_custom_types'));if(d&&Array.isArray(d)){customTypes=d;d.forEach(n=>{if(!TYPE_MAP[n])TYPE_MAP[n]={l:n,c:'bg-s'}})}}catch(e){}}
+function saveCustomTypes(){try{localStorage.setItem('kernik_custom_types',JSON.stringify(customTypes))}catch(e){}}
+
+// ── ATTACHMENT / LINK MANAGEMENT ──
+function addLink(id){
+    const url=prompt('Paste link (URL):','https://');
+    if(!url||url==='https://'||!url.trim())return;
+    const name=prompt('Document name:',url.length>50?url.substr(0,47)+'...':url);
+    if(!name)return;
+    S.tasks=S.tasks.map(t=>t.id===id?{...t,links:[...(t.links||[]),{name:name.trim(),url:url.trim(),type:'link',date:new Date().toISOString().split('T')[0]}]}:t);
+    save();R();
+}
+function addFileLink(id){
+    // Create a file input to get the file, then store as data URL
+    const inp=document.createElement('input');inp.type='file';inp.accept='.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.txt,.csv';
+    inp.onchange=function(){
+        const file=inp.files[0];if(!file)return;
+        if(file.size>5*1024*1024){alert('File too large (max 5 MB). Please use a link instead.');return}
+        const reader=new FileReader();
+        reader.onload=function(e){
+            S.tasks=S.tasks.map(t=>t.id===id?{...t,links:[...(t.links||[]),{name:file.name,url:e.target.result,type:'file',date:new Date().toISOString().split('T')[0],size:file.size}]}:t);
+            save();R();
+        };
+        reader.readAsDataURL(file);
+    };
+    inp.click();
+}
+function removeLink(id,idx){
+    if(!confirm('Remove this attachment?'))return;
+    S.tasks=S.tasks.map(t=>{if(t.id===id){const links=[...(t.links||[])];links.splice(idx,1);return{...t,links}}return t});
+    save();R();
+}
+
+function exportJSON(){const b=new Blob([JSON.stringify(S.tasks,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`KERNIK_Hub_Backup_${new Date().toISOString().split('T')[0]}.json`;a.click()}
+function exportCSV(){const h=['Project','Country','Product','Customer','Status','Type','Lead','Match','Price','Source','Deadline','Priority','Progress','Summary','Notes'];const r=S.tasks.map(t=>[t.p,t.country,t.product,t.customer,t.status,t.type,t.lead,t.match,t.price,t.source,t.deadline,t.pri,t.prog,t.summary,t.notes].map(v=>`"${String(v||'').replace(/"/g,'""')}"`));const csv=[h.join(','),...r.map(r=>r.join(','))].join('\n');const b=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`KERNIK_Hub_${new Date().toISOString().split('T')[0]}.csv`;a.click()}
+function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(Array.isArray(d)){S.tasks=d;save();R();alert('Imported '+d.length+' tasks!')}}catch(e){alert('Error: '+e.message)}};r.readAsText(f);e.target.value=''}
+
+loadCustomTypes();load();R();
+</script>
+</body>
+</html>
